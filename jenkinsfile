@@ -1,0 +1,47 @@
+pipeline {
+agent any
+stages {
+stage('Checkout') {
+steps {
+// Étape de récupération du code source depuis le dépôt
+git 'https://github.com/mon-depot/mon-app.git'
+}
+}
+stage('Build') {
+steps {
+// Étape de construction de l'application
+sh './build.sh'
+}
+}
+stage('Test') {
+steps {
+sh 'npm install'
+sh 'npm test'
+}
+}
+stage('Push Docker Image') {
+steps {
+script {
+docker.withRegistry('https://registry.hub.docker.com',
+'docker-credentials') {
+dockerImage.push()
+}
+}
+}
+}
+stage('Deploy') {
+steps {
+// Étape de déploiement de l'application
+sh './deploy.sh'
+}
+}
+}
+post {
+success {
+echo 'Le pipeline s\'est terminé avec succès.'
+}
+failure {
+echo 'Le pipeline a échoué.'
+}
+}
+}
