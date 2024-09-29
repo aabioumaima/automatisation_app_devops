@@ -1,3 +1,4 @@
+
 // app.js
 
 import express from 'express';
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-// Start the server
+// Start thee server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
